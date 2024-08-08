@@ -1,4 +1,4 @@
-const { getBrands, getBearings } = require('./db');
+import { getBrands, getBearings } from "./db";
 
 async function main ()  {
     try {

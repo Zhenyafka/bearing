@@ -1,3 +1,4 @@
+import {Bearings, Brands} from "./components/tables";
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -8,13 +9,14 @@ const pool = new Pool({
     port: 5432,
 });
 
-async function getBrands() {
-    const query = 'SELECT id, name FROM brand'
+
+export async function getBrands(): Promise<Brands[]> {
+    const query = 'SELECT id, name FROM brand';
     const result = await pool.query(query);
-    return result.rows;
+    return result.rows as Brands[];
 }
 
-async function getBearings() {
+export async function getBearings(): Promise<Bearings[]> {
     const query = `
         SELECT bearings.name AS name,
                brand.name    AS brand,
@@ -26,16 +28,10 @@ async function getBearings() {
                type.name AS type,
                country.name AS country
         FROM bearings
-                 JOIN brand
-                      ON bearings.brand_id = brand.id
+                 JOIN brand ON bearings.brand_id = brand.id
                  JOIN type ON bearings.type_id = type.id
                  JOIN country ON bearings.country_id = country.id
-  `;
+    `;
     const result = await pool.query(query);
-    return result.rows;
+    return result.rows as Bearings[];
 }
-
-module.exports = {
-    getBrands,
-    getBearings,
-};
